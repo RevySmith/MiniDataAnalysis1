@@ -75,8 +75,10 @@ Out of the 5 data sets listed above, choose **2** that appeal to you based on th
 
 1: Write 1st choice here
 wildfire
+
 2: Write 2nd choice here
-coffee census
+hcmst
+
 
 <!----------------------------------------------------------------------------->
 
@@ -89,45 +91,113 @@ One way to narrowing down your selection is to *explore* the data sets. Use your
 
 #### Data Set 1
 ```{r}
-### Explore 3 variables of data set 1 ###
-glimpse(wildfire)
+# variable 1: temperature
+wildfire |>
+  summarise(mean_temperature = mean(temperature, na.rm = TRUE))
 
-#
-#have wildires spread quicker over time
+# variable 2: fire spread rate
+wildfire |>
+  summarise(mean_spread_rate = mean(fire_spread_rate, na.rm = TRUE))
+
+# variable 3: mean spread rate of each general cause
+wildfire |>
+  group_by(general_cause) |>
+  summarise(mean_spread_rate = mean(fire_spread_rate, na.rm = TRUE))
+
+# testing graphs of the wildfire data set
+
+# relationship between year and fire spread rate
+# have wildfires spread quicker over time?
+wildfire |>
+  ggplot(aes(x = year, y = fire_spread_rate)) +
+  geom_point(alpha = 0.2)
+
+# relationship between temperature and fire spread rate
+# does temperature cause wildfires to spread faster?
+wildfire |>
+  ggplot(aes(x = temperature, y = fire_spread_rate)) +
+  geom_point(alpha = 0.2)
+
+# relationship between year and general cause of wildfire
+# how has the general cause of wildfire changed over the years
+wildfire |>
+  ggplot(aes(x = year, fill = general_cause)) +
+  geom_bar() +
+  labs(
+    x = "Year",
+    y = "Number of Fires",
+    fill = "General Cause"
+  )
+   
 ```
 
 
 Write your findings here.
 
+The three variables I chose to investigate further were temperature, spread rate, and general cause. The mean temperature across the entire data set is around 18, which was lower than I expected. The mean spread rate across all recorded wildfires is 0.9. I found looking at the mean spread rate for each general cause to be the most interesting as the average spread rate for each cause varies noticeably
+
+To get an even better sense of the data, I decided to also create 3 graphs to potentially see what variables I could further explore.
+
+The first two graphs I created were comparing year to fire spread rate and temperature to fire spread rate. I was surprised that both of those graphs were not very interesting as I did not notice a clear pattern in the data. For my third graph, I chose to make a bar plot of the general cause of recorded wildfires over the years. I am really happy with how this one turned out as it gives me a great visual representation of the data in many different ways. I can use this graph not only to see how the general cause has changed over time, but also how the total number of recorded wildfires has changed over the years. The first  thing I noticed is the year 2020 stood out as it had a lot fewer recorded wildfires than every other year. This plot also shows me how the causes of recorded wildfires have changed over the years as well, for example recorded wildfires started from residents seem to have decreased over the years.
 
 
 
 #### Data Set 2
 ```{r}
-### Explore 3 variables of data set 2 ###
+# variable 1: age
+hcmst |>
+  summarise(mean_age = mean(subject_age, na.rm = TRUE))
+
+# variable 2: relationship duration
+hcmst |>
+  summarise(mean_duration = mean(relationship_duration, na.rm = TRUE))
+
+# variable 3: mean relationship duration for every category of relationship quality
+hcmst |>
+  group_by(relationship_quality) |>
+  summarise(mean_duration = mean(relationship_duration, na.rm = TRUE))
+
+# testing graphs of the hcmst data set
+
+# histogram of ages
+# what ages are most common among the survey participants?
+hcmst |>
+  ggplot(aes(x = subject_age)) +
+  geom_histogram(binwidth = 5)
+
+#histogram of relationship duration
+# how are relationship durations distributed?
+hcmst |>
+  ggplot(aes(x = relationship_duration)) +
+  geom_histogram()
+
+#bar plot of relationship quality
+# how do participants rate their relationships?
+hcmst |>
+  ggplot(aes(x = relationship_quality)) +
+  geom_bar()
 
 ```
 
 Write your findings here.
 
+The three variables I explored in the hcmst data set were age, relationship duration, and relationship quality. The mean age across all participants of this data survey is around 56 years old. The mean duration of the relationships is around 27. The mean relationship duration varied across the categories of relationship quality. I found it interesting that participants who rated their relationships as very poor had the longest average duration of approximately 34.55 since I expected it to be the other way around.
 
+I also created some graphs for the hcmst data set. My findings from the graphs are shown below.
+
+The first data plot I made was a histogram of ages participating in this data survey. Most people participating in this study seem to be around 60 years old, with an outlier of a participant around 100 years old. The second plot I made was a histogram of relationship durations. This plot seems to be right skewed with an outlier at over 100. The third plot I made was for relationship quality. This plot I found very interesting as most participants rated their relationship quality as excellent or good, while a very small portion rated fair, poor, or very poor.
 
 
 <!----------------------------------------------------------------------------->
-
-
-
-
-
-
 
 ### 1.3: Choose 1 Data Set **(2 points)**
 
 It's time to choose only one data set. State the data set that you've chosen, and why you've chosen it.
 
 <!-------------------------- Start your work below ---------------------------->
+wildfire
 
-
+I am choosing wildfire because the last data graph I made (bar graph of general cause of recorded wildfires over the years) has given me many ideas of potential questions which I could ask about the data set, and in general I think it will be very interesting to take a deep look at.
 
 <!----------------------------------------------------------------------------->
 
@@ -141,8 +211,9 @@ Write your research questions **as questions**, and be specific. You can change 
 > For example, if I had chosen a `titanic` data set for my project, I might ask, "(Primary) Is there a relationship between survival and the class of the passengers? (Secondary) Does this relationship differ by gender?"
 
 <!-------------------------- Start your work below ---------------------------->
+Primary: How have the numbers of recorded wildfires from different causes changed from 2006 to 2024?
 
-
+Secondary: How have the proportions of recorded wildfires from each general cause changed over the same period?
 
 
 <!----------------------------------------------------------------------------->
