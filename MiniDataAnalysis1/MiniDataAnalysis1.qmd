@@ -91,6 +91,9 @@ One way to narrowing down your selection is to *explore* the data sets. Use your
 
 #### Data Set 1
 ```{r}
+### Explore 3 variables of data set 1 ###
+glimpse(wildfire)
+
 # variable 1: temperature
 wildfire |>
   summarise(mean_temperature = mean(temperature, na.rm = TRUE))
@@ -144,6 +147,8 @@ The first two graphs I created were comparing year to fire spread rate and tempe
 
 #### Data Set 2
 ```{r}
+### Explore 3 variables of data set 2 ###
+
 # variable 1: age
 hcmst |>
   summarise(mean_age = mean(subject_age, na.rm = TRUE))
@@ -211,9 +216,9 @@ Write your research questions **as questions**, and be specific. You can change 
 > For example, if I had chosen a `titanic` data set for my project, I might ask, "(Primary) Is there a relationship between survival and the class of the passengers? (Secondary) Does this relationship differ by gender?"
 
 <!-------------------------- Start your work below ---------------------------->
-Primary: How have the numbers of recorded wildfires from different causes changed from 2006 to 2024?
+Primary: How did the annual number of recorded wildfires vary by general cause from 2006 to 2024?
 
-Secondary: How have the proportions of recorded wildfires from each general cause changed over the same period?
+Secondary: Does this relationship differ among fire types (Surface, Ground, and Crown fires)?
 
 
 <!----------------------------------------------------------------------------->
@@ -239,7 +244,17 @@ Your task is to create a table that calculates the proportion of missing values 
 <!-------------------------- Start your work below ---------------------------->
 
 ```{r}
-### Explore missingness here ###
+missing_table <- wildfire |>
+  mutate_all(as.character) |>
+  pivot_longer(
+    cols = year:first_ex_size_perimeter,
+    names_to = "variable",
+    values_to = "value"
+  ) |>
+  group_by(variable) |>
+  summarise(proportion_missing = mean(is.na(value)))
+
+print(missing_table, n = 35)
 
 ```
 
@@ -264,8 +279,7 @@ If missingness is not an issue, describe why.
 
 <!-------------------------- Start your work below ---------------------------->
 
-
-
+For my specific research questions, missingness will not pose an issue. The variables year and general_cause both have no missing values. The variable fire_type is only missing one value, which is 0.00377% of the data. Since it is below 20%, missingness will not pose an issue.
 
 <!----------------------------------------------------------------------------->
 
@@ -291,6 +305,12 @@ Show the first 6 rows of the tidied data.
 <!-------------------------- Start your work below ---------------------------->
 ```{r}
 
+wildfire_tidy <- wildfire |>
+  # select only the variables needed for my research questions
+  select(year, general_cause, fire_type)
+
+# displays only 6 rows
+print(wildfire_tidy, n = 6)
 
 
 
@@ -307,8 +327,12 @@ Show the outputted table.
 
 <!-------------------------- Start your work below ---------------------------->
 ```{r}
-
-
+wildfire_tidy |>
+  summarise(
+    mean_year = mean(year, na.rm = TRUE),
+    min_year = min(year, na.rm = TRUE),
+    max_year = max(year, na.rm = TRUE)
+  )
 
 
 ```
