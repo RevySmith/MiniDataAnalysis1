@@ -92,7 +92,6 @@ One way to narrowing down your selection is to *explore* the data sets. Use your
 #### Data Set 1
 ```{r}
 ### Explore 3 variables of data set 1 ###
-glimpse(wildfire)
 
 # variable 1: temperature
 wildfire |>
