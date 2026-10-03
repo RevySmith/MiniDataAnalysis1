@@ -7,6 +7,7 @@ MiniDataAnalysis1/: Folder with the assignment and data
 MiniDataAnalysis1.qmd: Quarto document with my R code and written responses.
 dat/: Folder with data files
 .gitignore: Specifies which files Git should not include in the repo
+MiniDataAnalysis1.md: Rendered document of the mini data analysis
 
 ## How to engage with the repo
 Open MiniDataAnalysis1.Rproj as a project in RStudio, then open MiniDataAnalysis1.qmd to view my code. Render the code to see my results.
